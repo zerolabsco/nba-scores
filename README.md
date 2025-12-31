@@ -27,12 +27,12 @@ pipx install nba-scores
 To run the script locally, run the following commands:
 
 ```shell
-git clone https://git.sr.ht/~cxc/nba-scores
+git clone https://git.cleberg.net/nba-scores.git
 cd nba-scores
 pipx install .
 ```
 
-![Installation](https://git.sr.ht/~cxc/nba-scores/blob/main/screenshots/installation.png)
+![Installation](./screenshots/installation.png)
 
 # Usage
 
@@ -47,10 +47,10 @@ All commands can be passed to the program with the following template:
 | `--standings` | `-st`    | Show current conference standings |
 
 Scores:
-![Scores](https://git.sr.ht/~cxc/nba-scores/blob/main/screenshots/scores.png)
+![Scores](./screenshots/scores.png)
 
 Standings:
-![Standings](https://git.sr.ht/~cxc/nba-scores/blob/main/screenshots/standings.png)
+![Standings](./screenshots/standings.png)
 
 # Contributing
 

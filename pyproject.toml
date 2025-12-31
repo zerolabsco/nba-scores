@@ -19,8 +19,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://git.sr.ht/~cxc/nba-scores"
-Issues = "https://git.sr.ht/~cxc/nba-scores"
+Homepage = "https://git.cleberg.net/nba-scores.git"
+Issues = "https://git.cleberg.net/nba-scores.git"
 
 [project.scripts]
 nba = "nba.cli:nba"

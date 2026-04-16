@@ -2,3 +2,5 @@
 venv/
 dist/
 nba-scores.egg-info*
+nba/__pycache__/
+nba/tui/__pycache__/

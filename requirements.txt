@@ -1,3 +1,4 @@
 argparse
 nba_api
 tabulate
+textual>=0.89.1,<7.0

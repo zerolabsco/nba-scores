@@ -13,12 +13,33 @@ def nba() -> None:
     Parse command-line arguments and display either scoreboard or standings.
     """
     parser = argparse.ArgumentParser(description="NBA Scoreboard and Standings")
-    parser.add_argument("--scores", action="store_true", help="Display the scoreboard")
     parser.add_argument(
-        "--standings", action="store_true", help="Display the standings"
+        "--scores", "-sc", action="store_true", help="Display the scoreboard"
+    )
+    parser.add_argument(
+        "--standings", "-st", action="store_true", help="Display the standings"
+    )
+    parser.add_argument(
+        "--tui", action="store_true", help="Launch the interactive TUI"
+    )
+    parser.add_argument(
+        "--refresh",
+        type=int,
+        default=60,
+        metavar="SECONDS",
+        help="Auto-refresh interval in TUI mode (default: 60, minimum: 10)",
     )
     args = parser.parse_args()
 
+    if args.tui:
+        from nba.tui.app import NBAApp
+
+        initial_tab = "standings" if args.standings else "scores"
+        refresh_interval = max(args.refresh, 10)
+        NBAApp(initial_tab=initial_tab, refresh_interval=refresh_interval).run()
+        return
+
+    # Legacy static mode
     games, ranks = fetch_data.fetch_data()
 
     if args.scores:
@@ -26,4 +47,4 @@ def nba() -> None:
     elif args.standings:
         standings.build_standings(ranks)
     else:
-        print("Please specify --scores or --standings")
+        print("Please specify --scores or --standings (or use --tui for interactive mode)")

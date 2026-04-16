@@ -1,0 +1,2 @@
+[console_scripts]
+nba = nba.cli:nba

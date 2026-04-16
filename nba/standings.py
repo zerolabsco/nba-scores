@@ -11,6 +11,71 @@ RED = "\033[91m"
 GREEN = "\033[32m"
 
 
+def _build_conference_table(standings, conference: str) -> str:
+    """Build a formatted table string for one conference."""
+    data = []
+    rank = 1
+
+    for result_set in standings["resultSets"]:
+        if result_set["name"] == "Standings":
+            for team in result_set["rowSet"]:
+                if team[5] != conference:
+                    continue
+                wins = team[12]
+                losses = team[13]
+                win_pct = team[14]
+                streak = team[35]
+
+                strk_color = (
+                    f"{RED}{streak}{END}" if int(streak) < 0 else f"{GREEN}{streak}{END}"
+                )
+
+                data.append(
+                    [
+                        f"{rank}",
+                        team[4],
+                        f"{wins}-{losses}",
+                        f"{win_pct:.3f}",
+                        team[37],
+                        strk_color,
+                        team[19],
+                        team[17],
+                        team[18],
+                    ]
+                )
+                rank += 1
+
+    headers = ["Rank", "Team", "W-L", "PCT", "GB", "STRK", "L10", "HOME", "AWAY"]
+    label = "Eastern" if conference == "East" else "Western"
+    return (
+        f"{BOLD}{label} Conference Standings:{END}\n"
+        + tabulate(data, headers=headers, tablefmt="grid")
+    )
+
+
+def get_east_standings_table(standings) -> str:
+    """Returns the Eastern Conference standings as a formatted string."""
+    return _build_conference_table(standings, "East")
+
+
+def get_west_standings_table(standings) -> str:
+    """Returns the Western Conference standings as a formatted string."""
+    return _build_conference_table(standings, "West")
+
+
+def get_standings_tables(standings) -> str:
+    """
+    Builds and returns both conference standings as a formatted string.
+
+    Args:
+            standings (dict): Team standings data.
+
+    Returns:
+            str: Formatted standings string with ANSI color codes for both conferences.
+    """
+    return get_east_standings_table(standings) + "\n\n" + get_west_standings_table(standings)
+
+
 def build_standings(standings) -> None:
     """
     Prints team standings in two separate tables.
@@ -18,66 +83,4 @@ def build_standings(standings) -> None:
     Args:
             standings (dict): Team standings data.
     """
-    eastern_data = []
-    western_data = []
-    eastern_rank = 1
-    western_rank = 1
-
-    for result_set in standings["resultSets"]:
-        if result_set["name"] == "Standings":
-            for team in result_set["rowSet"]:
-                conference = team[5]
-                team_name = team[4]
-                wins = team[12]
-                losses = team[13]
-                win_pct = team[14]
-                gb = team[37]
-                home_record = team[17]
-                away_record = team[18]
-                last_10 = team[19]
-                streak = team[35]
-
-                if int(streak) < 0:
-                    strk_color = f"{RED}{streak}{END}"
-                else:
-                    strk_color = f"{GREEN}{streak}{END}"
-
-                if conference == "East":
-                    eastern_data.append(
-                        [
-                            f"{eastern_rank}",
-                            f"{team_name}",
-                            f"{wins}-{losses}",
-                            f"{win_pct:.3f}",
-                            f"{gb}",
-                            f"{strk_color}",
-                            f"{last_10}",
-                            f"{home_record}",
-                            f"{away_record}",
-                        ]
-                    )
-                    eastern_rank += 1
-                elif conference == "West":
-                    western_data.append(
-                        [
-                            f"{western_rank}",
-                            f"{team_name}",
-                            f"{wins}-{losses}",
-                            f"{win_pct:.3f}",
-                            f"{gb}",
-                            f"{strk_color}",
-                            f"{last_10}",
-                            f"{home_record}",
-                            f"{away_record}",
-                        ]
-                    )
-                    western_rank += 1
-
-    headers = ["Rank", "Team", "W-L", "PCT", "GB", "STRK", "L10", "HOME", "AWAY"]
-
-    print(f"{BOLD}Eastern Conference Standings:{END}")
-    print(tabulate(eastern_data, headers=headers, tablefmt="grid"))
-
-    print("\n")
-    print(f"{BOLD}Western Conference Standings:{END}")
-    print(tabulate(western_data, headers=headers, tablefmt="grid"))
+    print(get_standings_tables(standings))

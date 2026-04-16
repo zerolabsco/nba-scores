@@ -31,20 +31,26 @@ def get_team_record(team_name, standings) -> str:
     return "N/A"
 
 
-def build_scoreboard(games, standings) -> None:
+def get_scoreboard_table(games, standings) -> str:
     """
-    Prints the current day's games in a table format.
+    Builds and returns the current day's games as a formatted table string.
 
     Args:
             games (dict): JSON parsed games data.
             standings (dict): Team standings data.
+
+    Returns:
+            str: Formatted table string with ANSI color codes.
     """
     scoreboard_data = games["scoreboard"]
-    games = scoreboard_data["games"]
+    game_list = scoreboard_data["games"]
+
+    if not game_list:
+        return "No games scheduled today."
 
     # Prepare the table data
     table_data = []
-    for game in games:
+    for game in game_list:
         home_team = game["homeTeam"]["teamName"]
         away_team = game["awayTeam"]["teamName"]
         game_status = game["gameStatusText"]
@@ -86,5 +92,15 @@ def build_scoreboard(games, standings) -> None:
     # Define the table headers
     headers = ["Team", "Score", "Game Status"]
 
-    # Print the table
-    print(tabulate(table_data, headers=headers, tablefmt="grid"))
+    return tabulate(table_data, headers=headers, tablefmt="grid")
+
+
+def build_scoreboard(games, standings) -> None:
+    """
+    Prints the current day's games in a table format.
+
+    Args:
+            games (dict): JSON parsed games data.
+            standings (dict): Team standings data.
+    """
+    print(get_scoreboard_table(games, standings))

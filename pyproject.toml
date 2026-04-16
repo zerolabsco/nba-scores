@@ -6,7 +6,7 @@ authors = [
 ]
 description = "A CLI interface to get current NBA scores and standings."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license = "GPL-3.0-or-later"
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -15,7 +15,8 @@ classifiers = [
 dependencies = [
     "nba_api",
     "tabulate",
-    "argparse"
+    "argparse",
+    "textual>=0.89.1,<7.0"
 ]
 
 [project.urls]
@@ -25,6 +26,16 @@ Issues = "https://git.cleberg.net/nba-scores.git"
 [project.scripts]
 nba = "nba.cli:nba"
 
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.uv]
+package = true
+
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["nba"]
+include = ["nba*"]
+
+[tool.setuptools.package-data]
+"nba.tui" = ["*.tcss"]

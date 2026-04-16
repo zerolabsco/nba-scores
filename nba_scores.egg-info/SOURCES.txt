@@ -3,8 +3,11 @@ README.md
 pyproject.toml
 nba/__init__.py
 nba/__main__.py
+nba/box_score.py
 nba/cli.py
 nba/fetch_data.py
+nba/leaders.py
+nba/playoff.py
 nba/scores.py
 nba/standings.py
 nba/tui/__init__.py

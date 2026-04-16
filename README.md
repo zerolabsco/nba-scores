@@ -19,18 +19,10 @@ auto-refresh.
 
 [Back to top](#table-of-contents)
 
-## PyPi
-
-```shell
-pipx install nba-scores
-```
-
-## Manual
-
 ```shell
 git clone https://git.cleberg.net/nba-scores.git
 cd nba-scores
-uv sync
+pipx install .
 ```
 
 # Usage

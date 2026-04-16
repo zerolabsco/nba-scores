@@ -1,0 +1,58 @@
+Screen {
+    background: $background;
+}
+
+TabbedContent {
+    height: 1fr;
+}
+
+TabPane {
+    overflow: auto auto;
+    padding: 1 2;
+}
+
+/* Scores tab */
+#scores-content {
+    width: auto;
+}
+
+/* Standings & Playoff tabs — two columns side by side */
+#standings-container,
+#playoff-container,
+#boxscore-container {
+    height: 1fr;
+    width: 100%;
+}
+
+#east-content,
+#west-content,
+#playoff-east-content,
+#playoff-west-content {
+    width: 1fr;
+    overflow: auto auto;
+    padding-right: 2;
+}
+
+/* Leaders tab */
+#leaders-content {
+    width: auto;
+    overflow: auto auto;
+}
+
+/* Box Score tab */
+#home-content,
+#away-content {
+    width: 1fr;
+    overflow: auto auto;
+    padding-right: 2;
+}
+
+/* Countdown / status bar */
+#countdown {
+    dock: bottom;
+    height: 1;
+    background: $panel;
+    color: $text-muted;
+    content-align: right middle;
+    padding-right: 2;
+}

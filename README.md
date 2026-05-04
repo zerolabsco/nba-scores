@@ -54,6 +54,7 @@ Optional flags:
 | Standings       | `t` | East / West conference standings, side by side           |
 | Leaders         | `l` | Top 25 players by stat category                          |
 | Playoff Picture | `p` | Conference seeding with clinch and elimination status    |
+| Bracket         | `k` | Playoff series matchups and series records               |
 | Box Score       | `b` | Per-player live stats for a selected game                |
 
 ### TUI key bindings

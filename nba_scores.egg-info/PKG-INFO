@@ -1,8 +1,8 @@
 Metadata-Version: 2.4
 Name: nba-scores
-Version: 0.1.7
+Version: 0.2.2
 Summary: A CLI interface to get current NBA scores and standings.
-Author-email: Christian Cleberg <hello@cmc.pub>
+Author-email: Christian Cleberg <hello@cleberg.net>
 License-Expression: GPL-3.0-or-later
 Project-URL: Homepage, https://git.cleberg.net/nba-scores.git
 Project-URL: Issues, https://git.cleberg.net/nba-scores.git
@@ -38,18 +38,10 @@ auto-refresh.
 
 [Back to top](#table-of-contents)
 
-## PyPi
-
-```shell
-pipx install nba-scores
-```
-
-## Manual
-
 ```shell
 git clone https://git.cleberg.net/nba-scores.git
 cd nba-scores
-uv sync
+pipx install .
 ```
 
 # Usage
@@ -81,6 +73,7 @@ Optional flags:
 | Standings       | `t` | East / West conference standings, side by side           |
 | Leaders         | `l` | Top 25 players by stat category                          |
 | Playoff Picture | `p` | Conference seeding with clinch and elimination status    |
+| Bracket         | `k` | Playoff series matchups and series records               |
 | Box Score       | `b` | Per-player live stats for a selected game                |
 
 ### TUI key bindings

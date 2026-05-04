@@ -13,6 +13,7 @@ from textual.containers import Horizontal
 from textual.widgets import Footer, Header, Static, TabbedContent, TabPane
 
 from nba import fetch_data
+from nba import bracket as bracket_mod
 from nba import leaders as leaders_mod
 from nba import playoff as playoff_mod
 from nba import box_score as box_score_mod
@@ -32,6 +33,7 @@ class NBAApp(App):
         ("t", "show_standings", "Standings"),
         ("l", "show_leaders", "Leaders"),
         ("p", "show_playoff", "Playoff"),
+        ("k", "show_bracket", "Bracket"),
         ("b", "show_boxscore", "Box Score"),
         ("r", "refresh_now", "Refresh"),
         ("comma", "prev_category", "◀ Cat"),
@@ -49,6 +51,7 @@ class NBAApp(App):
         self._leaders_data: dict | None = None
         self._leaders_cat_idx: int = 0
         self._playoff_data: dict | None = None
+        self._bracket_data: dict | None = None
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -65,6 +68,8 @@ class NBAApp(App):
                 with Horizontal(id="playoff-container"):
                     yield Static("Loading...", id="playoff-west-content")
                     yield Static("Loading...", id="playoff-east-content")
+            with TabPane("Bracket", id="bracket"):
+                yield Static("Loading...", id="bracket-content")
             with TabPane("Box Score", id="boxscore"):
                 with Horizontal(id="boxscore-container"):
                     yield Static(
@@ -84,7 +89,7 @@ class NBAApp(App):
     # ------------------------------------------------------------------ #
 
     async def _do_refresh(self) -> None:
-        """Fetch scores, standings, leaders, and playoff picture in parallel."""
+        """Fetch scores, standings, leaders, playoff picture, and bracket in parallel."""
         loop = asyncio.get_event_loop()
         cat = leaders_mod.CATEGORIES[self._leaders_cat_idx][0]
 
@@ -92,10 +97,11 @@ class NBAApp(App):
             loop.run_in_executor(None, fetch_data.fetch_data),
             loop.run_in_executor(None, lambda: leaders_mod.fetch_leaders(cat)),
             loop.run_in_executor(None, playoff_mod.fetch_playoff_picture),
+            loop.run_in_executor(None, bracket_mod.fetch_bracket),
             return_exceptions=True,
         )
 
-        games_ranks, leaders_data, playoff_data = results
+        games_ranks, leaders_data, playoff_data, bracket_data = results
 
         if not isinstance(games_ranks, Exception):
             self._games, self._ranks = games_ranks
@@ -103,6 +109,8 @@ class NBAApp(App):
             self._leaders_data = leaders_data
         if not isinstance(playoff_data, Exception):
             self._playoff_data = playoff_data
+        if not isinstance(bracket_data, Exception):
+            self._bracket_data = bracket_data
 
         self._update_widgets()
         self.query_one(CountdownBar).reset(self.refresh_interval)
@@ -133,6 +141,11 @@ class NBAApp(App):
                 Text.from_ansi(playoff_mod.get_east_playoff_table(self._playoff_data))
             )
 
+        if self._bracket_data:
+            self.query_one("#bracket-content", Static).update(
+                Text.from_ansi(bracket_mod.get_bracket_table(self._bracket_data))
+            )
+
     # ------------------------------------------------------------------ #
     # Key handlers                                                         #
     # ------------------------------------------------------------------ #
@@ -161,6 +174,9 @@ class NBAApp(App):
 
     def action_show_playoff(self) -> None:
         self.query_one(TabbedContent).active = "playoff"
+
+    def action_show_bracket(self) -> None:
+        self.query_one(TabbedContent).active = "bracket"
 
     def action_show_boxscore(self) -> None:
         self.query_one(TabbedContent).active = "boxscore"

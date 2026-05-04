@@ -4,6 +4,7 @@ pyproject.toml
 nba/__init__.py
 nba/__main__.py
 nba/box_score.py
+nba/bracket.py
 nba/cli.py
 nba/fetch_data.py
 nba/leaders.py

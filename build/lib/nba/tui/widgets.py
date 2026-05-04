@@ -41,7 +41,8 @@ class CountdownBar(Static):
         else:
             self.update(
                 f"Next refresh in {value}s  |  "
-                "\\[1-9] Box Score  |  \\[</>] Leaders Cat  |  \\[r] Refresh  |  \\[q] Quit"
+                "\\[1-9] Box Score  |  \\[k] Bracket  |  "
+                "\\[</>] Leaders Cat  |  \\[r] Refresh  |  \\[q] Quit"
             )
 
     def reset(self, interval: int) -> None:

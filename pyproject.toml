@@ -1,8 +1,8 @@
 [project]
 name = "nba-scores"
-version = "0.1.7"
+version = "0.2.2"
 authors = [
-  { name="Christian Cleberg", email="hello@cmc.pub" },
+  { name="Christian Cleberg", email="hello@cleberg.net" },
 ]
 description = "A CLI interface to get current NBA scores and standings."
 readme = "README.md"

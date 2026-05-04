@@ -16,7 +16,7 @@ TabPane {
     width: auto;
 }
 
-/* Standings & Playoff tabs — two columns side by side */
+/* Standings, Playoff, Bracket, and Box Score tabs */
 #standings-container,
 #playoff-container,
 #boxscore-container {
@@ -27,7 +27,8 @@ TabPane {
 #east-content,
 #west-content,
 #playoff-east-content,
-#playoff-west-content {
+#playoff-west-content,
+#bracket-content {
     width: 1fr;
     overflow: auto auto;
     padding-right: 2;

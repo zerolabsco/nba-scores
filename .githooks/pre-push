@@ -1,0 +1,21 @@
+#!/bin/sh
+set -eu
+
+if ! command -v ruff >/dev/null 2>&1; then
+    echo "pre-push: ruff is not installed or not on PATH" >&2
+    exit 1
+fi
+
+before_status="$(git status --porcelain)"
+
+echo "pre-push: running ruff format"
+ruff format
+
+after_status="$(git status --porcelain)"
+if [ "$before_status" != "$after_status" ]; then
+    echo "pre-push: ruff format changed files; commit the formatting before pushing" >&2
+    exit 1
+fi
+
+echo "pre-push: running ruff check"
+ruff check

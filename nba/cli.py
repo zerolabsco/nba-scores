@@ -19,9 +19,7 @@ def nba() -> None:
     parser.add_argument(
         "--standings", "-st", action="store_true", help="Display the standings"
     )
-    parser.add_argument(
-        "--tui", action="store_true", help="Launch the interactive TUI"
-    )
+    parser.add_argument("--tui", action="store_true", help="Launch the interactive TUI")
     parser.add_argument(
         "--refresh",
         type=int,
@@ -47,4 +45,6 @@ def nba() -> None:
     elif args.standings:
         standings.build_standings(ranks)
     else:
-        print("Please specify --scores or --standings (or use --tui for interactive mode)")
+        print(
+            "Please specify --scores or --standings (or use --tui for interactive mode)"
+        )

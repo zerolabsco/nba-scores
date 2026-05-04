@@ -10,7 +10,21 @@ from nba_api.live.nba.endpoints.boxscore import BoxScore
 BOLD = "\033[1m"
 END = "\033[0m"
 
-_HEADERS = ["Player", "Pos", "Min", "Pts", "Reb", "Ast", "Stl", "Blk", "TO", "FG", "3P", "FT", "+/-"]
+_HEADERS = [
+    "Player",
+    "Pos",
+    "Min",
+    "Pts",
+    "Reb",
+    "Ast",
+    "Stl",
+    "Blk",
+    "TO",
+    "FG",
+    "3P",
+    "FT",
+    "+/-",
+]
 
 
 def fetch_box_score(game_id: str) -> dict:
@@ -36,21 +50,23 @@ def _player_rows(players: list) -> list:
         if p.get("status") == "INACTIVE":
             continue
         s = p.get("statistics", {})
-        rows.append([
-            p.get("name", ""),
-            p.get("position", ""),
-            _parse_minutes(s.get("minutes", "")),
-            s.get("points", 0),
-            s.get("reboundsTotal", 0),
-            s.get("assists", 0),
-            s.get("steals", 0),
-            s.get("blocks", 0),
-            s.get("turnovers", 0),
-            f"{s.get('fieldGoalsMade', 0)}/{s.get('fieldGoalsAttempted', 0)}",
-            f"{s.get('threePointersMade', 0)}/{s.get('threePointersAttempted', 0)}",
-            f"{s.get('freeThrowsMade', 0)}/{s.get('freeThrowsAttempted', 0)}",
-            s.get("plusMinusPoints", 0),
-        ])
+        rows.append(
+            [
+                p.get("name", ""),
+                p.get("position", ""),
+                _parse_minutes(s.get("minutes", "")),
+                s.get("points", 0),
+                s.get("reboundsTotal", 0),
+                s.get("assists", 0),
+                s.get("steals", 0),
+                s.get("blocks", 0),
+                s.get("turnovers", 0),
+                f"{s.get('fieldGoalsMade', 0)}/{s.get('fieldGoalsAttempted', 0)}",
+                f"{s.get('threePointersMade', 0)}/{s.get('threePointersAttempted', 0)}",
+                f"{s.get('freeThrowsMade', 0)}/{s.get('freeThrowsAttempted', 0)}",
+                s.get("plusMinusPoints", 0),
+            ]
+        )
     return rows
 
 
@@ -59,13 +75,6 @@ def get_box_score_tables(data: dict) -> tuple:
     game = data["game"]
     home = game["homeTeam"]
     away = game["awayTeam"]
-
-    home_title = (
-        f"{BOLD}{home['teamCity']} {home['teamName']}  "
-        f"{home['score']} — {away['score']}  "
-        f"{away['teamCity']} {away['teamName']}{END}  "
-        f"  [{game.get('gameStatusText', '')}]"
-    )
 
     home_rows = _player_rows(home.get("players", []))
     away_rows = _player_rows(away.get("players", []))

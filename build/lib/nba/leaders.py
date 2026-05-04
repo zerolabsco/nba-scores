@@ -25,20 +25,23 @@ CATEGORIES = [
 
 # Extra columns to show alongside RANK, PLAYER, TEAM, GP for each category
 _EXTRA_COLS = {
-    "PTS":    ["PTS", "FGM", "FGA", "FG_PCT", "FTM", "FTA", "FT_PCT"],
-    "REB":    ["REB", "OREB", "DREB", "GP"],
-    "AST":    ["AST", "TOV", "AST_TOV", "GP"],
-    "STL":    ["STL", "TOV", "GP"],
-    "BLK":    ["BLK", "PF", "GP"],
-    "EFF":    ["EFF", "PTS", "REB", "AST", "GP"],
+    "PTS": ["PTS", "FGM", "FGA", "FG_PCT", "FTM", "FTA", "FT_PCT"],
+    "REB": ["REB", "OREB", "DREB", "GP"],
+    "AST": ["AST", "TOV", "AST_TOV", "GP"],
+    "STL": ["STL", "TOV", "GP"],
+    "BLK": ["BLK", "PF", "GP"],
+    "EFF": ["EFF", "PTS", "REB", "AST", "GP"],
     "FG_PCT": ["FG_PCT", "FGM", "FGA", "PTS"],
     "FT_PCT": ["FT_PCT", "FTM", "FTA", "PTS"],
-    "FG3_PCT":["FG3_PCT", "FG3M", "FG3A", "PTS"],
+    "FG3_PCT": ["FG3_PCT", "FG3M", "FG3A", "PTS"],
 }
 
 _DISPLAY_NAMES = {
-    "FG_PCT": "FG%", "FT_PCT": "FT%", "FG3_PCT": "3P%",
-    "FG3M": "3PM", "FG3A": "3PA",
+    "FG_PCT": "FG%",
+    "FT_PCT": "FT%",
+    "FG3_PCT": "3P%",
+    "FG3M": "3PM",
+    "FG3A": "3PA",
     "AST_TOV": "AST/TO",
 }
 
@@ -61,10 +64,7 @@ def get_leaders_table(data: dict, category: str = "PTS") -> str:
     wanted = base + extra
 
     idx = {h: i for i, h in enumerate(headers)}
-    table_data = [
-        [row[idx[col]] for col in wanted if col in idx]
-        for row in rows[:25]
-    ]
+    table_data = [[row[idx[col]] for col in wanted if col in idx] for row in rows[:25]]
     display_headers = [_DISPLAY_NAMES.get(c, c) for c in wanted if c in idx]
 
     cat_label = dict(CATEGORIES).get(category, category)

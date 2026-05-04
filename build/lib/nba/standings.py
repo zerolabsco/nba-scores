@@ -27,7 +27,9 @@ def _build_conference_table(standings, conference: str) -> str:
                 streak = team[35]
 
                 strk_color = (
-                    f"{RED}{streak}{END}" if int(streak) < 0 else f"{GREEN}{streak}{END}"
+                    f"{RED}{streak}{END}"
+                    if int(streak) < 0
+                    else f"{GREEN}{streak}{END}"
                 )
 
                 data.append(
@@ -47,9 +49,8 @@ def _build_conference_table(standings, conference: str) -> str:
 
     headers = ["Rank", "Team", "W-L", "PCT", "GB", "STRK", "L10", "HOME", "AWAY"]
     label = "Eastern" if conference == "East" else "Western"
-    return (
-        f"{BOLD}{label} Conference Standings:{END}\n"
-        + tabulate(data, headers=headers, tablefmt="grid")
+    return f"{BOLD}{label} Conference Standings:{END}\n" + tabulate(
+        data, headers=headers, tablefmt="grid"
     )
 
 
@@ -73,7 +74,11 @@ def get_standings_tables(standings) -> str:
     Returns:
             str: Formatted standings string with ANSI color codes for both conferences.
     """
-    return get_east_standings_table(standings) + "\n\n" + get_west_standings_table(standings)
+    return (
+        get_east_standings_table(standings)
+        + "\n\n"
+        + get_west_standings_table(standings)
+    )
 
 
 def build_standings(standings) -> None:

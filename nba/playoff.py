@@ -21,6 +21,7 @@ def fetch_playoff_picture() -> dict:
 
 def _clinch_status(row: list, idx: dict) -> str:
     """Return a color-coded status string from clinch/elimination columns."""
+
     def val(col):
         return row[idx[col]] if col in idx else None
 
@@ -54,19 +55,31 @@ def _build_conference_table(result_sets: list, name: str) -> str:
         losses = get(row, "LOSSES")
         pct = get(row, "PCT")
         pct_str = f"{float(pct):.3f}" if pct not in ("", None) else ""
-        table_data.append([
-            get(row, "RANK"),
-            get(row, "TEAM"),
-            f"{wins}-{losses}",
-            pct_str,
-            get(row, "GB"),
-            get(row, "HOME"),
-            get(row, "AWAY"),
-            get(row, "CONF"),
-            _clinch_status(row, idx),
-        ])
+        table_data.append(
+            [
+                get(row, "RANK"),
+                get(row, "TEAM"),
+                f"{wins}-{losses}",
+                pct_str,
+                get(row, "GB"),
+                get(row, "HOME"),
+                get(row, "AWAY"),
+                get(row, "CONF"),
+                _clinch_status(row, idx),
+            ]
+        )
 
-    display_headers = ["#", "Team", "W-L", "PCT", "GB", "HOME", "AWAY", "CONF", "Status"]
+    display_headers = [
+        "#",
+        "Team",
+        "W-L",
+        "PCT",
+        "GB",
+        "HOME",
+        "AWAY",
+        "CONF",
+        "Status",
+    ]
     conf_label = "Eastern" if "East" in name else "Western"
     title = f"{BOLD}{conf_label} Conference Playoff Picture:{END}"
     return title + "\n" + tabulate(table_data, headers=display_headers, tablefmt="grid")

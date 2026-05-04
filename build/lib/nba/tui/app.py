@@ -182,11 +182,15 @@ class NBAApp(App):
         self.query_one(TabbedContent).active = "boxscore"
 
     async def action_prev_category(self) -> None:
-        self._leaders_cat_idx = (self._leaders_cat_idx - 1) % len(leaders_mod.CATEGORIES)
+        self._leaders_cat_idx = (self._leaders_cat_idx - 1) % len(
+            leaders_mod.CATEGORIES
+        )
         await self._refresh_leaders()
 
     async def action_next_category(self) -> None:
-        self._leaders_cat_idx = (self._leaders_cat_idx + 1) % len(leaders_mod.CATEGORIES)
+        self._leaders_cat_idx = (self._leaders_cat_idx + 1) % len(
+            leaders_mod.CATEGORIES
+        )
         await self._refresh_leaders()
 
     # ------------------------------------------------------------------ #
@@ -198,13 +202,17 @@ class NBAApp(App):
         self.query_one("#leaders-content", Static).update(f"Loading {label} leaders...")
         loop = asyncio.get_event_loop()
         try:
-            data = await loop.run_in_executor(None, lambda: leaders_mod.fetch_leaders(cat))
+            data = await loop.run_in_executor(
+                None, lambda: leaders_mod.fetch_leaders(cat)
+            )
             self._leaders_data = data
             self.query_one("#leaders-content", Static).update(
                 Text.from_ansi(leaders_mod.get_leaders_table(data, cat))
             )
         except Exception as exc:
-            self.query_one("#leaders-content", Static).update(f"Error loading leaders: {exc}")
+            self.query_one("#leaders-content", Static).update(
+                f"Error loading leaders: {exc}"
+            )
 
     async def _load_box_score(self, game_idx: int) -> None:
         if not self._games:
@@ -233,5 +241,7 @@ class NBAApp(App):
             self.query_one("#home-content", Static).update(Text.from_ansi(home_table))
             self.query_one("#away-content", Static).update(Text.from_ansi(away_table))
         except Exception as exc:
-            self.query_one("#home-content", Static).update(f"Error loading box score: {exc}")
+            self.query_one("#home-content", Static).update(
+                f"Error loading box score: {exc}"
+            )
             self.query_one("#away-content", Static).update("")

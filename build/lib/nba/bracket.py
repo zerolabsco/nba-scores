@@ -3,6 +3,7 @@ Fetches and formats the NBA playoff bracket.
 """
 
 import json
+import re
 from collections import defaultdict
 from typing import Optional
 
@@ -13,6 +14,10 @@ from nba_api.stats.static import teams
 BOLD = "\033[1m"
 END = "\033[0m"
 GREEN = "\033[32m"
+RED = "\033[91m"
+YELLOW = "\033[33m"
+CYAN = "\033[36m"
+ANSI_RE = re.compile(r"\033\[[0-9;]*m")
 
 ROUND_LABELS = {
     1: "First Round",
@@ -54,6 +59,8 @@ def get_bracket_table(data: dict) -> str:
     return "\n".join(
         [
             _center(f"{BOLD}NBA Playoff Bracket{END}", 74),
+            f"{GREEN}* Advanced{END}  {RED}x Eliminated{END}  "
+            f"{CYAN}> Series lead{END}  {YELLOW}! Can clinch next win{END}",
             "",
             _render_conference("Western", summaries),
             "",
@@ -182,7 +189,7 @@ def _render_finals(summaries: dict) -> str:
     if final is None:
         lines.append("Winner TBD")
     elif final["winner"]:
-        lines.append(f"{GREEN}{final['winner']} wins the Finals{END}")
+        lines.append(f"{BOLD}{GREEN}{final['winner']} wins the Finals{END}")
     return "\n".join(lines)
 
 
@@ -209,20 +216,36 @@ def _series_box(summary: Optional[dict], width: int) -> str:
     visitor = _team_line(
         summary["visitor_abbr"],
         summary["visitor_wins"],
+        summary["home_wins"],
         summary["winner"] == summary["visitor_abbr"],
+        summary["winner"] == summary["home_abbr"],
     )
     home = _team_line(
         summary["home_abbr"],
         summary["home_wins"],
+        summary["visitor_wins"],
         summary["winner"] == summary["home_abbr"],
+        summary["winner"] == summary["visitor_abbr"],
     )
-    return f"{visitor} / {home}".ljust(width)
+    return _pad_ansi(f"{visitor} / {home}", width)
 
 
-def _team_line(abbr: str, wins: int, won_series: bool) -> str:
+def _team_line(
+    abbr: str,
+    wins: int,
+    opponent_wins: int,
+    won_series: bool,
+    lost_series: bool,
+) -> str:
     label = f"{abbr} {wins}"
     if won_series:
-        return f"{label}*"
+        return f"{BOLD}{GREEN}{label}*{END}"
+    if lost_series:
+        return f"{RED}{label}x{END}"
+    if wins == 3:
+        return f"{BOLD}{YELLOW}{label}!{END}"
+    if wins > opponent_wins:
+        return f"{CYAN}{label}>{END}"
     return label
 
 
@@ -246,6 +269,11 @@ def _blank(width: int, text: str = "") -> str:
 
 def _center(text: str, width: int) -> str:
     return text.center(width)
+
+
+def _pad_ansi(text: str, width: int) -> str:
+    visible_length = len(ANSI_RE.sub("", text))
+    return text + " " * max(width - visible_length, 0)
 
 
 def _round_number(series_id: str) -> int:

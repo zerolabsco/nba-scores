@@ -1,6 +1,6 @@
 [project]
 name = "nba-scores"
-version = "0.2.2"
+version = "0.2.3"
 authors = [
   { name="Christian Cleberg", email="hello@cleberg.net" },
 ]

@@ -39,3 +39,23 @@ include = ["nba*"]
 
 [tool.setuptools.package-data]
 "nba.tui" = ["*.tcss"]
+
+[tool.ruff.lint]
+# ruff's defaults widen with each release, and the workflow installs whatever is
+# newest — which is how this repo went from green in May to sixteen findings in
+# August without a line of its own code changing. The rules below are the two
+# that fight the code rather than improve it; everything else ruff flags is
+# treated as worth fixing.
+ignore = [
+  # Blind `except Exception`. Deliberate here: a duration parser that falls back
+  # to the raw string, and TUI handlers that render "Error loading …" instead of
+  # taking the whole app down. Narrowing them would make the app crash on the
+  # cases they exist to absorb.
+  "BLE001",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Textual's compose() nests `with` blocks because the nesting *is* the widget
+# tree. Collapsing them into a single `with A, B:` would flatten a hierarchy
+# that is meant to be read as one.
+"nba/tui/app.py" = ["SIM117"]

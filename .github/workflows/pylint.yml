@@ -19,8 +19,13 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    # Pinned. Unpinned, this installs whatever ruff shipped this week, and a
+    # release that adds a rule turns the build red with no change to the code —
+    # which is what happened between May and August 2026.
     - name: Install Ruff
       uses: astral-sh/ruff-action@v3.2.2
+      with:
+        version: "0.16.4"
     - name: Ruff Actions
       run: |
         ruff check --fix

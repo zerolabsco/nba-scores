@@ -2,10 +2,11 @@
 Fetches and formats the NBA playoff bracket.
 """
 
+from __future__ import annotations
+
 import json
 import re
 from collections import defaultdict
-from typing import Optional
 
 from nba_api.stats.endpoints.commonplayoffseries import CommonPlayoffSeries
 from nba_api.stats.endpoints.leaguegamelog import LeagueGameLog
@@ -59,8 +60,10 @@ def get_bracket_table(data: dict) -> str:
     return "\n".join(
         [
             _center(f"{BOLD}NBA Playoff Bracket{END}", 74),
-            f"{GREEN}* Advanced{END}  {RED}x Eliminated{END}  "
-            f"{CYAN}> Series lead{END}  {YELLOW}! Can clinch next win{END}",
+            (
+                f"{GREEN}* Advanced{END}  {RED}x Eliminated{END}  "
+                f"{CYAN}> Series lead{END}  {YELLOW}! Can clinch next win{END}"
+            ),
             "",
             _render_conference("Western", summaries),
             "",
@@ -205,11 +208,11 @@ def _conference_round(summaries: dict, conference: str, round_number: int) -> li
     )
 
 
-def _slot(items: list, idx: int) -> Optional[dict]:
+def _slot(items: list, idx: int) -> dict | None:
     return items[idx] if idx < len(items) else None
 
 
-def _series_box(summary: Optional[dict], width: int) -> str:
+def _series_box(summary: dict | None, width: int) -> str:
     if summary is None:
         return _blank(width, "TBD")
 

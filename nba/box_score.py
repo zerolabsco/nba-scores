@@ -4,8 +4,8 @@ Fetches and formats live box scores for individual games.
 
 import json
 
-from tabulate import tabulate
 from nba_api.live.nba.endpoints.boxscore import BoxScore
+from tabulate import tabulate
 
 BOLD = "\033[1m"
 END = "\033[0m"

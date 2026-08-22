@@ -6,17 +6,19 @@ from __future__ import annotations
 
 import asyncio
 from pathlib import Path
+from typing import ClassVar
 
 from rich.text import Text
 from textual.app import App, ComposeResult
+from textual.binding import BindingType
 from textual.containers import Horizontal
 from textual.widgets import Footer, Header, Static, TabbedContent, TabPane
 
-from nba import fetch_data
+from nba import box_score as box_score_mod
 from nba import bracket as bracket_mod
+from nba import fetch_data
 from nba import leaders as leaders_mod
 from nba import playoff as playoff_mod
-from nba import box_score as box_score_mod
 from nba.scores import get_scoreboard_table
 from nba.standings import get_east_standings_table, get_west_standings_table
 from nba.tui.widgets import CountdownBar, ScoresWidget
@@ -27,7 +29,7 @@ class NBAApp(App):
 
     CSS_PATH = Path(__file__).parent / "styles.tcss"
 
-    BINDINGS = [
+    BINDINGS: ClassVar[list[BindingType]] = [
         ("q", "quit", "Quit"),
         ("s", "show_scores", "Scores"),
         ("t", "show_standings", "Standings"),

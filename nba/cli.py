@@ -5,6 +5,7 @@ It imports the required modules and sets up a parser with basic options for demo
 """
 
 import argparse
+
 from nba import fetch_data, scores, standings
 
 

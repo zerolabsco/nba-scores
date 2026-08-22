@@ -3,6 +3,7 @@ Fetches data for use in other modules.
 """
 
 import json
+
 from nba_api.live.nba.endpoints import scoreboard
 from nba_api.stats.endpoints import leaguestandings
 

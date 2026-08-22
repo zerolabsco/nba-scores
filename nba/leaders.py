@@ -4,8 +4,8 @@ Fetches and formats NBA statistical leaders.
 
 import json
 
-from tabulate import tabulate
 from nba_api.stats.endpoints.leagueleaders import LeagueLeaders
+from tabulate import tabulate
 
 BOLD = "\033[1m"
 END = "\033[0m"

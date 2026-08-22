@@ -4,8 +4,8 @@ Fetches and formats the NBA playoff picture.
 
 import json
 
-from tabulate import tabulate
 from nba_api.stats.endpoints.playoffpicture import PlayoffPicture
+from tabulate import tabulate
 
 BOLD = "\033[1m"
 END = "\033[0m"

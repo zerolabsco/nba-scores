@@ -2,5 +2,8 @@
 venv/
 dist/
 nba-scores.egg-info*
+nba_scores.egg-info/
 nba/__pycache__/
 nba/tui/__pycache__/
+build/
+*.py[cod]

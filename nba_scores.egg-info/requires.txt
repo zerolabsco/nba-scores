@@ -1,4 +1,0 @@
-nba_api
-tabulate
-argparse
-textual<7.0,>=0.89.1
